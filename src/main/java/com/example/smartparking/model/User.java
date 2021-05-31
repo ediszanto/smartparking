@@ -3,6 +3,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -21,7 +22,10 @@ public class User {
     private String lastName;
 
     private String email;
+    private String password;
     private String phone;
-    private String type; // ADMIN, CLIENT, GUEST
 
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Authority> authorities;
 }

@@ -15,6 +15,12 @@ public class UserContoller {
 
     private final UserService userService;
 
+    @PostMapping("/user")
+    public ResponseEntity<User> addUser(@RequestBody User user){
+        User savedUser = userService.addNewUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
     @GetMapping("/user/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws NotFoundException {
         User userByEmail = userService.getUserByEmail(email);
@@ -27,14 +33,8 @@ public class UserContoller {
         return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<User> addUser(@RequestBody User user){
-        User savedUser = userService.addNewUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-    }
-
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<Void> deleteUser(@RequestParam Long id){
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) throws NotFoundException {
         userService.deleteUserById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
