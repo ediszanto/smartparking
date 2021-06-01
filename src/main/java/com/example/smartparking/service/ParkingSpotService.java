@@ -18,4 +18,6 @@ public interface ParkingSpotService {
     ParkingSpot findSpotByNumber(Long spotNumber) throws NotFoundException;
 
     List<ParkingSpot> findSpotsByStatus(String spotStatus);
+
+    ParkingSpot updateParkingSpo(ParkingSpot parkingSpot) throws NotFoundException;
 }

@@ -13,7 +13,7 @@ import java.lang.annotation.Inherited;
 @Setter
 @Table(name = "parking_spot")
 @Entity
-//@ToString
+@ToString
 public class ParkingSpot extends Throwable {
 
     @Id
@@ -26,11 +26,13 @@ public class ParkingSpot extends Throwable {
     private String status; // asta e pt <free> din documentatie ( FREE / TAKEN )
 
 
-//
-//    @PostPersist
-//    public void setSpotNumber(){
-//        if(id != null){
-//            number = id;
-//        }
-//    }
+    @Override
+    public String toString() {
+        return "ParkingSpot{" +
+                "id=" + id +
+                ", number=" + number +
+                ", size='" + size + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

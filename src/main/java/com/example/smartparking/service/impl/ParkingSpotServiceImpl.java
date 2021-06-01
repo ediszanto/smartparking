@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,10 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public ParkingSpot createParkingSpot(ParkingSpot parkingSpot) {
-        //Optional.ofNullable(parkingSpotRepository.getByNumber(parkingSpot.getNumber())).orElseThrow(() -> new IllegalStateException("Spot Already Created"));
+        boolean spotExists = parkingSpotRepository.getByNumber(parkingSpot.getNumber()).isPresent();
+        if (spotExists){
+            throw new IllegalStateException(String.format("Spot with number %i is already created", parkingSpot.getNumber()));
+        }
         return parkingSpotRepository.save(parkingSpot);
     }
 
@@ -36,6 +40,15 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     @Override
     public List<ParkingSpot> findSpotsByStatus(String spotStatus) {
         return parkingSpotRepository.getParkingSpotByStatusSpots(spotStatus);
+    }
+
+    @Override
+    public ParkingSpot updateParkingSpo(ParkingSpot parkingSpot) throws NotFoundException {
+        ParkingSpot savedParkingSpot = findSpotByNumber(parkingSpot.getNumber());
+        savedParkingSpot.setNumber(Optional.ofNullable(parkingSpot.getNumber()).orElse(savedParkingSpot.getNumber()));
+        savedParkingSpot.setSize(Optional.ofNullable(parkingSpot.getSize()).orElse(savedParkingSpot.getSize()));
+        savedParkingSpot.setStatus(Optional.ofNullable(parkingSpot.getStatus()).orElse(savedParkingSpot.getStatus()));
+        return parkingSpotRepository.save(savedParkingSpot);
     }
 
     @Override

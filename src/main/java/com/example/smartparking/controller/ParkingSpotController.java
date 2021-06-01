@@ -14,6 +14,7 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/smartparking")
+
 public class ParkingSpotController {
 
     private final ParkingSpotService parkingSpotService;
@@ -26,6 +27,14 @@ public class ParkingSpotController {
         ParkingSpot newParkingSpot = parkingSpotService.createParkingSpot(parkingSpot);
         return new ResponseEntity<>(newParkingSpot, HttpStatus.CREATED);
     }
+
+//    UPDTE
+    @PutMapping("/spot")
+    public ResponseEntity<ParkingSpot> updateParkingSpot(@RequestBody ParkingSpot   parkingSpot) throws NotFoundException {
+        ParkingSpot upadtedParkingSpot = parkingSpotService.updateParkingSpo(parkingSpot);
+        return new ResponseEntity<>(upadtedParkingSpot, HttpStatus.OK);
+    }
+
 
 //    DELETE By Spot Number
     @DeleteMapping("/spot/{spotNumber}")
@@ -52,6 +61,7 @@ public class ParkingSpotController {
     @GetMapping("/spot/{spotId}")
     public ResponseEntity<ParkingSpot> getSpotById(@PathVariable Long spotId) throws NotFoundException {
         ParkingSpot spot = parkingSpotService.findSpotById(spotId);
+        System.out.println(spot.toString());
         return new ResponseEntity<>(spot, HttpStatus.OK);
     }
 
@@ -60,6 +70,5 @@ public class ParkingSpotController {
         List<ParkingSpot> spots = parkingSpotService.getAllSpots();
         return new ResponseEntity<>(spots, HttpStatus.OK);
     }
-
 
 }
