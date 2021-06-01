@@ -24,4 +24,7 @@ public interface ParkingSpotRepository extends JpaRepository<ParkingSpot, Long> 
 
     @Query("select s from ParkingSpot s where s.status=:spotStatus")
     List<ParkingSpot> getParkingSpotByStatusSpots(String spotStatus);
+
+    @Query(" select distinct p from ParkingSpot p where p.size=:size and p.status=:status")
+    List<ParkingSpot> getEmptySpotBySize(String size, String status);
 }

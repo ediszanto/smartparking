@@ -9,6 +9,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
+//@Embeddable
 public class User {
 
     @Id

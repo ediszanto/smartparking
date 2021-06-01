@@ -14,7 +14,8 @@ import java.lang.annotation.Inherited;
 @Table(name = "parking_spot")
 @Entity
 @ToString
-public class ParkingSpot extends Throwable {
+//@Embeddable
+public class ParkingSpot  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

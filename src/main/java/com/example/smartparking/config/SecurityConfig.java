@@ -18,7 +18,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().mvcMatchers(HttpMethod.POST, "/smartparking/spot").hasAuthority("ADMIN")
-                                .mvcMatchers(HttpMethod.POST, "/smartparking/user").permitAll();
+                                .mvcMatchers(HttpMethod.POST, "/smartparking/user").permitAll()
+                                .mvcMatchers(HttpMethod.POST, "/smartparking/reservation").hasAuthority("CLIENT")
+                                .anyRequest().permitAll();
 
     }
 
