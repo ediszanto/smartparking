@@ -3,7 +3,7 @@ package com.example.smartparking.service.impl;
 import com.example.smartparking.model.ParkingSpot;
 import com.example.smartparking.repository.ParkingSpotRepository;
 import com.example.smartparking.service.ParkingSpotService;
-import javassist.NotFoundException;
+import com.example.smartparking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +20,21 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     public ParkingSpot createParkingSpot(ParkingSpot parkingSpot) {
         boolean spotExists = parkingSpotRepository.getByNumber(parkingSpot.getNumber()).isPresent();
         if (spotExists){
-            throw new IllegalStateException(String.format("Spot with number %i is already created", parkingSpot.getNumber()));
+            throw new IllegalStateException(String.format("Spot with number {} is already created", parkingSpot.getNumber()));
         }
         return parkingSpotRepository.save(parkingSpot);
     }
 
     @Override
-    public void deleteSpotByNumber(Long spotNumber) throws NotFoundException {
+    public void deleteSpotByNumber(Long spotNumber){
         ParkingSpot parkingSpot = findSpotByNumber(spotNumber);
         parkingSpotRepository.delete(parkingSpot);
     }
 
     @Override
-    public ParkingSpot findSpotByNumber(Long spotNumber) throws NotFoundException {
+    public ParkingSpot findSpotByNumber(Long spotNumber){
        return parkingSpotRepository.getByNumber(spotNumber)
-               .orElseThrow(() -> new NotFoundException("spot not found"));
+               .orElseThrow(() -> new NotFoundException("parking spot not found"));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public ParkingSpot updateParkingSpo(ParkingSpot parkingSpot) throws NotFoundException {
+    public ParkingSpot updateParkingSpot(ParkingSpot parkingSpot) {
         ParkingSpot savedParkingSpot = findSpotByNumber(parkingSpot.getNumber());
         savedParkingSpot.setNumber(Optional.ofNullable(parkingSpot.getNumber()).orElse(savedParkingSpot.getNumber()));
         savedParkingSpot.setSize(Optional.ofNullable(parkingSpot.getSize()).orElse(savedParkingSpot.getSize()));
@@ -52,7 +52,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public ParkingSpot findSpotById(Long spotId) throws NotFoundException {
+    public ParkingSpot findSpotById(Long spotId){
         return parkingSpotRepository.findById(spotId)
                 .orElseThrow(() -> new NotFoundException("spot not found in DB"));
     }

@@ -2,6 +2,7 @@ package com.example.smartparking.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 
@@ -16,6 +17,9 @@ public class Vehicle {
     private Long id;
 
     @Column(name = "license_plate")
+    @NotNull
     private String licensePlate;
+
+    @NotNull
     private String size; // S – motorcycle, M – car, L – truck, XL – bus
 }

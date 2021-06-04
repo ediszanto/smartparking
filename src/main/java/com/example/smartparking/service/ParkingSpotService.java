@@ -1,23 +1,21 @@
 package com.example.smartparking.service;
 
 import com.example.smartparking.model.ParkingSpot;
-import javassist.NotFoundException;
-
 import java.util.List;
 
 public interface ParkingSpotService {
 
     ParkingSpot createParkingSpot(ParkingSpot parkingSpot);
 
-    ParkingSpot findSpotById(Long spotId) throws NotFoundException;
+    ParkingSpot findSpotById(Long spotId);
 
     List<ParkingSpot> getAllSpots();
 
-    void deleteSpotByNumber(Long spotNumber) throws NotFoundException;
+    void deleteSpotByNumber(Long spotNumber);
 
-    ParkingSpot findSpotByNumber(Long spotNumber) throws NotFoundException;
+    ParkingSpot findSpotByNumber(Long spotNumber);
 
     List<ParkingSpot> findSpotsByStatus(String spotStatus);
 
-    ParkingSpot updateParkingSpo(ParkingSpot parkingSpot) throws NotFoundException;
+    ParkingSpot updateParkingSpot(ParkingSpot parkingSpot);
 }

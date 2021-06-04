@@ -1,14 +1,16 @@
 package com.example.smartparking.service.impl;
 
 
+import com.example.smartparking.model.Authority;
 import com.example.smartparking.model.User;
 import com.example.smartparking.repository.UserRepository;
 import com.example.smartparking.service.UserService;
-import javassist.NotFoundException;
+import com.example.smartparking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -28,6 +30,9 @@ public class UserServiceImpl implements UserService {
         if(phoneExists){
             throw new IllegalStateException("This phone is attached to another account. Please use another phone number");
         }
+        Authority authority = new Authority();
+        authority.setName("CLIENT");
+        user.setAuthorities(Collections.singletonList(authority));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -47,5 +52,18 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long id) throws NotFoundException {
         User userToDelete = getUserById(id);
         userRepository.delete(userToDelete);
+    }
+
+    @Override
+    public User updateUserDetails(Long id, User userUpdates) {
+        User user = userRepository.getById(id);
+
+        user.setPassword(Optional.ofNullable(passwordEncoder.encode(userUpdates.getPassword())).orElse(user.getPassword()));
+        user.setEmail(Optional.ofNullable(userUpdates.getEmail()).orElse(user.getEmail()));
+        user.setFirstName(Optional.ofNullable(userUpdates.getFirstName()).orElse(user.getFirstName()));
+        user.setLastName(Optional.ofNullable(userUpdates.getLastName()).orElse(user.getLastName()));
+        user.setPhone(Optional.ofNullable(userUpdates.getPhone()).orElse(user.getPhone()));
+
+        return userRepository.save(user);
     }
 }

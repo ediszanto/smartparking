@@ -7,9 +7,11 @@ public interface UserService {
 
     User addNewUser(User user);
 
-    User getUserByEmail(String email) throws NotFoundException;
+    User getUserByEmail(String email);
 
-    User getUserById(Long userId) throws NotFoundException;
+    User getUserById(Long userId);
 
-    void deleteUserById(Long id) throws NotFoundException;
+    void deleteUserById(Long id);
+
+    User updateUserDetails(Long id, User userUpdates);
 }

@@ -30,15 +30,15 @@ public class ParkingSpotController {
 
 //    UPDTE
     @PutMapping("/spot")
-    public ResponseEntity<ParkingSpot> updateParkingSpot(@RequestBody ParkingSpot   parkingSpot) throws NotFoundException {
-        ParkingSpot upadtedParkingSpot = parkingSpotService.updateParkingSpo(parkingSpot);
+    public ResponseEntity<ParkingSpot> updateParkingSpot(@RequestBody ParkingSpot   parkingSpot) {
+        ParkingSpot upadtedParkingSpot = parkingSpotService.updateParkingSpot(parkingSpot);
         return new ResponseEntity<>(upadtedParkingSpot, HttpStatus.OK);
     }
 
 
 //    DELETE By Spot Number
     @DeleteMapping("/spot/{spotNumber}")
-    public ResponseEntity<Void> deleteParkingSpot(@PathVariable Long spotNumber) throws NotFoundException {
+    public ResponseEntity<Void> deleteParkingSpot(@PathVariable Long spotNumber) {
         parkingSpotService.deleteSpotByNumber(spotNumber);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class ParkingSpotController {
 //    FIND
 //    By Number
     @GetMapping("/spot/findbynumber/{spotNumber}")
-    public ResponseEntity<ParkingSpot> getSpotByNumber(@PathVariable Long spotNumber) throws NotFoundException {
+    public ResponseEntity<ParkingSpot> getSpotByNumber(@PathVariable Long spotNumber) {
         ParkingSpot spot = parkingSpotService.findSpotByNumber(spotNumber);
         return new ResponseEntity<>(spot, HttpStatus.OK);
     }
@@ -59,7 +59,7 @@ public class ParkingSpotController {
     }
 
     @GetMapping("/spot/{spotId}")
-    public ResponseEntity<ParkingSpot> getSpotById(@PathVariable Long spotId) throws NotFoundException {
+    public ResponseEntity<ParkingSpot> getSpotById(@PathVariable Long spotId) {
         ParkingSpot spot = parkingSpotService.findSpotById(spotId);
         System.out.println(spot.toString());
         return new ResponseEntity<>(spot, HttpStatus.OK);

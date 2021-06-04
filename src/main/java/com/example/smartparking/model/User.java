@@ -1,6 +1,8 @@
 package com.example.smartparking.model;
 import lombok.Getter;
 import lombok.Setter;
+import org.intellij.lang.annotations.Pattern;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,21 +11,31 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
-//@Embeddable
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+
     @Column(name = "first_name")
+    @Pattern(value = "[a-zA-z]{1,15}")
     private String firstName;
 
     @Column(name = "last_name")
+    @Pattern(value = "[a-zA-z]{1,15}")
     private String lastName;
 
+    @NotNull
+    @Pattern(value = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
+
+    @NotNull
     private String password;
+
+    @NotNull
+    @Pattern(value = "[0-9]{10,13}")
     private String phone;
 
 

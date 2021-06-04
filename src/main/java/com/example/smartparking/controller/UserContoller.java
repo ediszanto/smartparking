@@ -22,21 +22,27 @@ public class UserContoller {
     }
 
     @GetMapping("/user/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) throws NotFoundException {
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         User userByEmail = userService.getUserByEmail(email);
         return new ResponseEntity<>(userByEmail, HttpStatus.OK);
     }
 
-    @GetMapping("/user/id/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) throws NotFoundException {
-        User userById = userService.getUserById(userId);
+    @GetMapping("/user/id/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User userById = userService.getUserById(id);
         return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PatchMapping("/user/{id}")
+    public ResponseEntity<User> updateUserDetails(@PathVariable Long id, @RequestBody User userUpdates){
+        User userUpdate = userService.updateUserDetails(id, userUpdates);
+        return new ResponseEntity<>(userUpdate, HttpStatus.OK);
     }
 
 
