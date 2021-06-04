@@ -40,7 +40,9 @@ public class ReservationServiceImpl implements ReservationService {
 
         // Verify if Parking spot is availble
         ParkingSpot desiredParkingSpot = parkingSpotService.findSpotByNumber(reservationRequest.getParkingSpot().getNumber());
-        if(!desiredParkingSpot.getStatus().equals("TAKEN") || !desiredParkingSpot.getSize().equals(reservationRequest.getParkingSpot().getSize())){
+
+//        TODO tre verificata conditia asta...ca nu stiu daca functioneaza cum trebuie:((((((
+        if(!desiredParkingSpot.getStatus().equals("TAKEN") || !desiredParkingSpot.getSize().equals(reservationRequest.getVehicle().getSize())){
             throw new IllegalStateException("Parking Spot already taken Or size of vehicle and parking spot doesn't match!");
         }
         reservationRequest.setParkingSpot(desiredParkingSpot);
@@ -49,20 +51,22 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation getReservationByReservationNumber(Long id) {
+    public Reservation getReservationByReservationById(Long id) {
         return reservationRepository.findReservationById(id).orElseThrow(() -> new NotFoundException("Reseration not found"));
     }
 
     @Override
     public void cancelReservation(Long id) throws NotFoundException {
-        Reservation canceledReservation = new Reservation();
-        canceledReservation.setEndTime(LocalDate.now());
-        updateReservation(id, canceledReservation);
+        Reservation reservationToInvalidate = getReservationByReservationById(id);
+
+        reservationToInvalidate.setExpiresAt(LocalDate.now());
+        reservationToInvalidate.setEndTime(LocalDate.now());
+        reservationRepository.save(reservationToInvalidate);
     }
 
     @Override
     public Reservation updateReservation(Long id, Reservation reservationUpdate) {
-        Reservation savedReservation = getReservationByReservationNumber(id);
+        Reservation savedReservation = getReservationByReservationById(id);
 
         LocalDate timeNow =   LocalDate.now();
         LocalDate limit = savedReservation.getStartTime().minusDays(7);

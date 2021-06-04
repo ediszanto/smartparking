@@ -10,7 +10,7 @@ public interface ReservationService {
 
     Reservation updateReservation(Long id, Reservation reservationUpdate);
 
-    Reservation getReservationByReservationNumber(Long id);
+    Reservation getReservationByReservationById(Long id);
 
     void cancelReservation(Long id);
 }

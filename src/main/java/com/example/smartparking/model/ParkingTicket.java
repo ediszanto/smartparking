@@ -1,10 +1,12 @@
 package com.example.smartparking.model;
 
+import com.fasterxml.jackson.annotation.JacksonInject;
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,9 +31,13 @@ public class ParkingTicket {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @NotNull
+//    @NotNull
     private LocalDateTime startTime;
 
-    @NotNull
+//    @NotNull
     private  LocalDateTime endTime;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parking_fee_id")
+    private ParkingFee parkingFee;
 }

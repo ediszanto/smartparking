@@ -22,7 +22,7 @@ public class ReservationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Reservation> getReservation(@PathVariable Long id){
-        Reservation reservation = reservationService.getReservationByReservationNumber(id);
+        Reservation reservation = reservationService.getReservationByReservationById(id);
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 

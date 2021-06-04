@@ -26,15 +26,15 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public void deleteSpotByNumber(Long spotNumber){
-        ParkingSpot parkingSpot = findSpotByNumber(spotNumber);
-        parkingSpotRepository.delete(parkingSpot);
+    public ParkingSpot findSpotByNumber(Long spotNumber){
+        return parkingSpotRepository.getByNumber(spotNumber)
+                .orElseThrow(() -> new NotFoundException("parking spot not found"));
     }
 
     @Override
-    public ParkingSpot findSpotByNumber(Long spotNumber){
-       return parkingSpotRepository.getByNumber(spotNumber)
-               .orElseThrow(() -> new NotFoundException("parking spot not found"));
+    public void deleteSpotByNumber(Long spotNumber){
+        ParkingSpot parkingSpot = findSpotByNumber(spotNumber);
+        parkingSpotRepository.delete(parkingSpot);
     }
 
     @Override
