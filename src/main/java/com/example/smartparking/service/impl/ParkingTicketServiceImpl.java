@@ -5,6 +5,7 @@ import com.example.smartparking.model.ParkingFee;
 import com.example.smartparking.model.ParkingSpot;
 import com.example.smartparking.model.ParkingTicket;
 import com.example.smartparking.model.Reservation;
+import com.example.smartparking.payment.PaymentFactory;
 import com.example.smartparking.repository.ParkingFeeRepository;
 import com.example.smartparking.repository.ParkingTicketRepository;
 import com.example.smartparking.repository.ReservationRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -36,9 +38,13 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
     public ParkingTicket parkWithReservation(String reservationNumber) {
         // vehicle , parking spot, parking spot status
         Reservation reservation = Optional.ofNullable(reservationRepository.findReservationByReservationNumber(reservationNumber)).orElseThrow(() -> new NotFoundException("reservation not found"));
+        ParkingSpot parkingSpot = reservation.getParkingSpot();
+
+        parkingSpot.setStatus("TAKEN");
+        parkingSpotService.updateParkingSpot(parkingSpot);
 
         ParkingTicket parkingTicket = new ParkingTicket();
-        parkingTicket.setParkingSpot(reservation.getParkingSpot());
+        parkingTicket.setParkingSpot(parkingSpot);
         parkingTicket.setVehicle(reservation.getVehicle());
         parkingTicket.setStartTime(LocalDateTime.now());
 
@@ -60,8 +66,13 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
         desiredParkingSpot.setStatus("TAKEN");
         parkingSpotService.updateParkingSpot(desiredParkingSpot);
 
+        ParkingFee parkingFee = parkingTicket.getParkingFee();
+        parkingFee.setParkingSpotSize(parkingTicket.getVehicle().getSize());
+
         parkingTicket.setParkingSpot(desiredParkingSpot);
+        parkingTicket.setVehicle(parkingTicket.getVehicle());
         parkingTicket.setStartTime(LocalDateTime.now());
+        parkingTicket.setParkingFee(parkingFee);
 
         return parkingTicketRepository.save(parkingTicket);
     }
@@ -70,6 +81,16 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
     public ParkingTicket pay(Long id) {
         ParkingTicket parkingTicket = Optional.ofNullable(parkingTicketRepository.getParkingTicketById(id)).orElseThrow(() -> new NotFoundException("ticked not found"));
         parkingTicket.setEndTime(LocalDateTime.now());
+
+        ParkingSpot parkingSpot = parkingTicket.getParkingSpot();
+        parkingSpot.setStatus("EMPTY");
+        parkingSpotService.updateParkingSpot(parkingSpot);
+
+        Duration duration = Duration.between(parkingTicket.getStartTime(), parkingTicket.getEndTime());
+        String size = parkingTicket.getParkingSpot().getSize();
+
+        log.info("You jave to pay: $" + PaymentFactory.calculatePayment(size, duration) + " \ntime to pay for: " + duration.toHours() + " hours");
+
         return parkingTicketRepository.save(parkingTicket);
     }
 

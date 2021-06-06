@@ -41,8 +41,8 @@ public class ReservationServiceImpl implements ReservationService {
         // Verify if Parking spot is availble
         ParkingSpot desiredParkingSpot = parkingSpotService.findSpotByNumber(reservationRequest.getParkingSpot().getNumber());
 
-//        TODO tre verificata conditia asta...ca nu stiu daca functioneaza cum trebuie:((((((
-        if(!desiredParkingSpot.getStatus().equals("TAKEN") || !desiredParkingSpot.getSize().equals(reservationRequest.getVehicle().getSize())){
+//        TODO tre verificata conditia asta...ca nu stiu daca functioneaza cum trebuie
+        if(desiredParkingSpot.getStatus().equals("TAKEN") || !desiredParkingSpot.getSize().equals(reservationRequest.getVehicle().getSize())){
             throw new IllegalStateException("Parking Spot already taken Or size of vehicle and parking spot doesn't match!");
         }
         reservationRequest.setParkingSpot(desiredParkingSpot);

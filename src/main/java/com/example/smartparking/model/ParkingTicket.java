@@ -31,10 +31,10 @@ public class ParkingTicket {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-//    @NotNull
+    @Column(name = "start_time")
     private LocalDateTime startTime;
 
-//    @NotNull
+    @Column(name = "end_time")
     private  LocalDateTime endTime;
 
     @OneToOne(cascade = CascadeType.ALL)

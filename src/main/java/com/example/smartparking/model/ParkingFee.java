@@ -24,7 +24,6 @@ public class ParkingFee {
 //    @JoinColumn(name = "parking_spot_id")
 //    private ParkingSpot parkingSpot;
 
-    @NotNull
     @Column(name = "parking_spot_size")
     private String parkingSpotSize;
 
