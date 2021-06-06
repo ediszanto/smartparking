@@ -18,11 +18,15 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     public ParkingSpot createParkingSpot(ParkingSpot parkingSpot) {
-        boolean spotExists = parkingSpotRepository.getByNumber(parkingSpot.getNumber()).isPresent();
-        if (spotExists){
-            throw new IllegalStateException(String.format("Spot with number {} is already created", parkingSpot.getNumber()));
-        }
-        return parkingSpotRepository.save(parkingSpot);
+        boolean spotExists = parkingSpotRepository.getByNumber(parkingSpot.getNumber()).isEmpty();
+        System.out.println(parkingSpotRepository.getByNumber(parkingSpot.getNumber()));
+        System.out.println(parkingSpot.getNumber());
+        System.out.println(spotExists);
+//        if (spotExists){
+//            throw new IllegalStateException(String.format("Spot with number {} is already created", parkingSpot.getNumber()));
+//        }
+//        return parkingSpotRepository.save(parkingSpot);
+        return parkingSpot;
     }
 
     @Override

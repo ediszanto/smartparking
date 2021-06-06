@@ -1,12 +1,11 @@
 package com.example.smartparking.controller;
 
 import com.example.smartparking.model.ParkingTicket;
-import com.example.smartparking.model.Reservation;
 import com.example.smartparking.service.ParkingTicketService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +25,7 @@ public class ParkingTicketController {
         }
 
         @PostMapping("/park")
-        public ResponseEntity<ParkingTicket> parkWithoutReservation(@RequestBody ParkingTicket parkingTicket){
+        public ResponseEntity<ParkingTicket> parkWithoutReservation(@Validated @RequestBody ParkingTicket parkingTicket){
                 ParkingTicket newParkingTicket = parkingTicketService.parkWithoutReservation(parkingTicket);
                 return new ResponseEntity<>(newParkingTicket, HttpStatus.CREATED);
         }

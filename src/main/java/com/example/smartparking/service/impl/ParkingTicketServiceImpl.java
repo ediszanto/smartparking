@@ -17,10 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
     private final ReservationServiceImpl reservationService;
     private final ParkingSpotService parkingSpotService;
     private final ParkingFeeRepository parkingFeeRepository;
-//    private final ParkingFeeService parkingFeeService;
+    private final ParkingFeeService parkingFeeService;
 
     @Override
     public ParkingTicket parkWithReservation(String reservationNumber) {
@@ -88,8 +86,14 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 
         Duration duration = Duration.between(parkingTicket.getStartTime(), parkingTicket.getEndTime());
         String size = parkingTicket.getParkingSpot().getSize();
+        Double amout = PaymentFactory.calculatePayment(size, duration);
 
-        log.info("You jave to pay: $" + PaymentFactory.calculatePayment(size, duration) + " \ntime to pay for: " + duration.toHours() + " hours");
+
+        ParkingFee parkingFee = parkingTicket.getParkingFee();
+        parkingFee.setAmount(amout);
+        parkingTicket.setParkingFee(parkingFee);
+
+        log.info("You jave to pay: $" + amout + " \ntime to pay for: " + duration.toHours() + " hours");
 
         return parkingTicketRepository.save(parkingTicket);
     }

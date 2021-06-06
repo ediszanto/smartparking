@@ -25,34 +25,31 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
-    private final ParkingSpotRepository parkingSpotRepository;
     private final ParkingSpotService parkingSpotService;
 
     @Override
-    public Reservation makeReservation(Reservation reservationRequest, Authentication authentication) {
-        reservationRequest.setIssuedAt(LocalDate.now());
-        reservationRequest.setExpiresAt(reservationRequest.getStartTime());
-        reservationRequest.setReservationNumber(UUID.randomUUID().toString());
-
-         //Get USER from Security Context
-        Optional<User> user = userRepository.findByEmail(authentication.getName());
-        reservationRequest.setUser(user.get());
-
-        // Verify if Parking spot is availble
+    public Reservation saveReservation(Reservation reservationRequest, Authentication authentication) {
+        User user = null;
+        if (Optional.ofNullable(userRepository.findByEmail(authentication.getName())).isEmpty()){
+            throw new NotFoundException("User Not Found");
+        }else{
+            user = userRepository.findByEmail(authentication.getName()).get();
+        }
         ParkingSpot desiredParkingSpot = parkingSpotService.findSpotByNumber(reservationRequest.getParkingSpot().getNumber());
-
-//        TODO tre verificata conditia asta...ca nu stiu daca functioneaza cum trebuie
         if(desiredParkingSpot.getStatus().equals("TAKEN") || !desiredParkingSpot.getSize().equals(reservationRequest.getVehicle().getSize())){
             throw new IllegalStateException("Parking Spot already taken Or size of vehicle and parking spot doesn't match!");
         }
+        reservationRequest.setReservationNumber(UUID.randomUUID().toString());
+        reservationRequest.setIssuedAt(LocalDate.now());
+        reservationRequest.setExpiresAt(reservationRequest.getStartTime());
         reservationRequest.setParkingSpot(desiredParkingSpot);
-
+        reservationRequest.setUser(user);
         return reservationRepository.save(reservationRequest);
     }
 
     @Override
     public Reservation getReservationByReservationById(Long id) {
-        return reservationRepository.findReservationById(id).orElseThrow(() -> new NotFoundException("Reseration not found"));
+        return reservationRepository.findReservationById(id).orElseThrow(() -> new NotFoundException("Reservation not found"));
     }
 
     @Override
@@ -68,12 +65,10 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation updateReservation(Long id, Reservation reservationUpdate) {
         Reservation savedReservation = getReservationByReservationById(id);
 
-        LocalDate timeNow =   LocalDate.now();
         LocalDate limit = savedReservation.getStartTime().minusDays(7);
-        if(timeNow.isAfter(limit)){
-            throw new IllegalStateException("Too Late. You are not allowed to update reservation after one wek before");
+        if(LocalDate.now().isAfter(limit)){
+            throw new IllegalStateException("Too Late. Last day to update is one week before start date");
         }
-
         savedReservation.setStartTime(Optional.ofNullable(reservationUpdate.getStartTime()).orElse(savedReservation.getStartTime()));
         savedReservation.setEndTime(Optional.ofNullable(reservationUpdate.getEndTime()).orElse(savedReservation.getEndTime()));
         return reservationRepository.save(savedReservation);

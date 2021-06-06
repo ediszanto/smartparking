@@ -6,6 +6,7 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,14 +24,14 @@ public class ParkingSpotController {
 
 //    ADD
     @PostMapping("/spot")
-    public ResponseEntity<ParkingSpot> saveParkingSpot(@RequestBody ParkingSpot parkingSpot){
+    public ResponseEntity<ParkingSpot> saveParkingSpot(@RequestBody @Validated ParkingSpot parkingSpot){
         ParkingSpot newParkingSpot = parkingSpotService.createParkingSpot(parkingSpot);
         return new ResponseEntity<>(newParkingSpot, HttpStatus.CREATED);
     }
 
 //    UPDTE
     @PutMapping("/spot")
-    public ResponseEntity<ParkingSpot> updateParkingSpot(@RequestBody ParkingSpot   parkingSpot) {
+    public ResponseEntity<ParkingSpot> updateParkingSpot(@Validated @RequestBody ParkingSpot   parkingSpot) {
         ParkingSpot upadtedParkingSpot = parkingSpotService.updateParkingSpot(parkingSpot);
         return new ResponseEntity<>(upadtedParkingSpot, HttpStatus.OK);
     }
@@ -45,14 +46,14 @@ public class ParkingSpotController {
 
 //    FIND
 //    By Number
-    @GetMapping("/spot/findbynumber/{spotNumber}")
+    @GetMapping("/spot/number/{spotNumber}")
     public ResponseEntity<ParkingSpot> getSpotByNumber(@PathVariable Long spotNumber) {
         ParkingSpot spot = parkingSpotService.findSpotByNumber(spotNumber);
         return new ResponseEntity<>(spot, HttpStatus.OK);
     }
 
 //    By Status
-    @GetMapping("/spot/findbystatus/{spotStatus}")
+    @GetMapping("/spot/status/{spotStatus}")
     public ResponseEntity<List<ParkingSpot>> getSpotsByStatus(@PathVariable("spotStatus") String spotStatus){
         List<ParkingSpot> spots = parkingSpotService.findSpotsByStatus(spotStatus);
         return new ResponseEntity<>(spots, HttpStatus.OK);
@@ -61,12 +62,11 @@ public class ParkingSpotController {
     @GetMapping("/spot/{spotId}")
     public ResponseEntity<ParkingSpot> getSpotById(@PathVariable Long spotId) {
         ParkingSpot spot = parkingSpotService.findSpotById(spotId);
-        System.out.println(spot.toString());
         return new ResponseEntity<>(spot, HttpStatus.OK);
     }
 
     @GetMapping("/spot/all")
-    public ResponseEntity<List<ParkingSpot>> getSpots() throws NotFoundException {
+    public ResponseEntity<List<ParkingSpot>> getAllSpots() throws NotFoundException {
         List<ParkingSpot> spots = parkingSpotService.getAllSpots();
         return new ResponseEntity<>(spots, HttpStatus.OK);
     }

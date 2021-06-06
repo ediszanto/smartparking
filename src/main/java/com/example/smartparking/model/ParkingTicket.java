@@ -3,6 +3,7 @@ package com.example.smartparking.model;
 import com.fasterxml.jackson.annotation.JacksonInject;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "parking_ticket")
+@ToString
 public class ParkingTicket {
 
     // ParkingTicket(id, parkingSpot, vehicle, start date/time...)
@@ -26,13 +28,15 @@ public class ParkingTicket {
     @JoinColumn(name = "parking_spot_id")
     private ParkingSpot parkingSpot;
 
-    @NotNull
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
+    @NotNull
     @Column(name = "start_time")
     private LocalDateTime startTime;
+
 
     @Column(name = "end_time")
     private  LocalDateTime endTime;

@@ -1,6 +1,8 @@
 package com.example.smartparking;
 
+import javassist.NotFoundException;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Null;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,17 +19,28 @@ public class OptionalTest {
 //    public static final int INT =;
 
     @Test
-    public void createOptional_withSth() {
+    public void createOptional_withSth() throws NotFoundException {
         Optional<String> opt1 = Optional.of(SOMETHING);
         Optional<String> opt2 = Optional.of(NOTHING);
+        Optional<String> opt3 = Optional.ofNullable(NULL);
 
         System.out.println(opt1);
         System.out.println(opt2);
-        System.out.println(opt2.isEmpty());
+        System.out.println(opt2.isPresent());
+        int i =100;
+        if (Optional.ofNullable(NULL).isEmpty()){
+            i = 1;
+        }else{
+            i = 0;
+        }
+        System.out.println(i);
 
-        assertTrue(opt1.isPresent());
-        assertTrue(opt2.isPresent());
+//        assertTrue(opt1.isPresent());
+//        assertTrue(opt2.isPresent());
 //        assertTrue(opt2.isEmpty());
+//        Optional<String> opt = Optional.of(NULL);
+//        String str = Optional.ofNullable(opt).orElseThrow(()->new NotFoundException("e nuuuuuuulll"));
+//        System.out.println(str);
     }
 
     @Test
@@ -67,7 +80,7 @@ public class OptionalTest {
 
     @Test
     public void refactorCode2() {
-        String value = SOMETHING;
+        String value = NULL;
         int stringLength = 3;
 
         /*if (value != null) {

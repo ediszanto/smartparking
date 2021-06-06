@@ -6,6 +6,7 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +17,8 @@ public class UserContoller {
     private final UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<User> addUser(@RequestBody User user){
-        User savedUser = userService.addNewUser(user);
+    public ResponseEntity<User> addUser(@Validated @RequestBody User user){
+        User savedUser = userService.addUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 

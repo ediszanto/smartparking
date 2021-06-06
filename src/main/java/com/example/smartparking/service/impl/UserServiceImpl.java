@@ -21,35 +21,32 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User addNewUser(User user) {
-        boolean emailExists = userRepository.findByEmail(user.getEmail()).isPresent();
-        boolean phoneExists = userRepository.findByEmail(user.getPhone()).isPresent();
-        if(emailExists){
-            throw new IllegalStateException("This email is attached to another account. Please use another email address");
+    public User addUser(User user) {
+        boolean emailExists = userRepository.findByEmail(user.getEmail()).isEmpty();
+        boolean phoneExists = userRepository.findByEmail(user.getPhone()).isEmpty();
+        if(emailExists || phoneExists){
+            throw new IllegalStateException("This email/phone is attached to another account. Please use another email address/phone");
         }
-        if(phoneExists){
-            throw new IllegalStateException("This phone is attached to another account. Please use another phone number");
-        }
-        Authority authority = new Authority();
-        authority.setName("CLIENT");
-        user.setAuthorities(Collections.singletonList(authority));
+//        Authority authority = new Authority();
+//        authority.setName("CLIENT");
+//        user.setAuthorities(Collections.singletonList(authority));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public User getUserByEmail(String email) throws NotFoundException {
+    public User getUserByEmail(String email)  {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     @Override
-    public User getUserById(Long userId) throws NotFoundException {
+    public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     @Override
-    public void deleteUserById(Long id) throws NotFoundException {
+    public void deleteUserById(Long id) {
         User userToDelete = getUserById(id);
         userRepository.delete(userToDelete);
     }

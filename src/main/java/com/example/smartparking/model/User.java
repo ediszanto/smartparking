@@ -1,6 +1,7 @@
 package com.example.smartparking.model;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.intellij.lang.annotations.Pattern;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
+@ToString
 public class User {
 
     @Id

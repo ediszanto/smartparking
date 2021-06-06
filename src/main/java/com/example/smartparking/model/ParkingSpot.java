@@ -3,10 +3,9 @@ package com.example.smartparking.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.ColumnTransformer;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import java.lang.annotation.Inherited;
 
 
 @Getter
@@ -21,9 +20,13 @@ public class ParkingSpot  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @NotNull
     private Long number;
+
+    @NotNull
     private String size;
+
+    @NotNull
     private String status; // asta e pt <free> din documentatie ( FREE / TAKEN )
 
 

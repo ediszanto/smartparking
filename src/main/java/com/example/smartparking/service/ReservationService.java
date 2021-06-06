@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 
 public interface ReservationService {
 
-    Reservation makeReservation(Reservation reservationRequest, Authentication authentication);
+    Reservation saveReservation(Reservation reservationRequest, Authentication authentication);
 
     Reservation updateReservation(Long id, Reservation reservationUpdate);
 

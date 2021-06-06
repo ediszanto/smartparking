@@ -1,15 +1,12 @@
 package com.example.smartparking.controller;
 
-import com.example.smartparking.model.Authority;
 import com.example.smartparking.model.Reservation;
 import com.example.smartparking.service.ReservationService;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,19 +17,19 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Reservation> getReservation(@PathVariable Long id){
-        Reservation reservation = reservationService.getReservationByReservationById(id);
-        return new ResponseEntity<>(reservation, HttpStatus.OK);
-    }
-
     @PostMapping
     public ResponseEntity<Reservation> reservationRequst(@RequestBody Reservation reservationRequest, Authentication authentication) {
-        Reservation reservation = reservationService.makeReservation(reservationRequest, authentication);
+        Reservation reservation = reservationService.saveReservation(reservationRequest, authentication);
         if (reservation != null) {
             log.info("Reservation Created succesfully");
         }
         return new ResponseEntity<>(reservation, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Reservation> getReservation(@PathVariable Long id){
+        Reservation reservation = reservationService.getReservationByReservationById(id);
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
