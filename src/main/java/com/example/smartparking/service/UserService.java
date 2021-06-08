@@ -5,7 +5,7 @@ import javassist.NotFoundException;
 
 public interface UserService {
 
-    User addUser(User user);
+    User saveUser(User user);
 
     User getUserByEmail(String email);
 

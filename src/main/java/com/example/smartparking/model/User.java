@@ -12,14 +12,12 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
-@ToString
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
 
     @Column(name = "first_name")
     @Pattern(value = "[a-zA-z]{1,15}")
@@ -29,14 +27,14 @@ public class User {
     @Pattern(value = "[a-zA-z]{1,15}")
     private String lastName;
 
-    @NotNull
+
     @Pattern(value = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
-    @NotNull
+
     private String password;
 
-    @NotNull
+//    @NotNull
     @Pattern(value = "[0-9]{10,13}")
     private String phone;
 

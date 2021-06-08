@@ -1,3 +1,4 @@
+
 package com.example.smartparking.model;
 
 import lombok.Getter;
@@ -12,7 +13,6 @@ import java.util.List;
 @Setter
 @Table( name = "authorities")
 @Entity
-@ToString
 public class Authority{
 
     @Id

@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "parking_ticket")
-@ToString
 public class ParkingTicket {
 
     // ParkingTicket(id, parkingSpot, vehicle, start date/time...)
@@ -23,7 +22,7 @@ public class ParkingTicket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+//    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parking_spot_id")
     private ParkingSpot parkingSpot;
@@ -33,7 +32,7 @@ public class ParkingTicket {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
-    @NotNull
+//    @NotNull
     @Column(name = "start_time")
     private LocalDateTime startTime;
 

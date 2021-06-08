@@ -10,7 +10,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class ParkingSpotController {
 //    ADD
     @PostMapping("/spot")
     public ResponseEntity<ParkingSpot> saveParkingSpot(@RequestBody @Validated ParkingSpot parkingSpot){
-        ParkingSpot newParkingSpot = parkingSpotService.createParkingSpot(parkingSpot);
+        ParkingSpot newParkingSpot = parkingSpotService.saveParkingSpot(parkingSpot);
         return new ResponseEntity<>(newParkingSpot, HttpStatus.CREATED);
     }
 

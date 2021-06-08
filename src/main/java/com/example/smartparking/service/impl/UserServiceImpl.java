@@ -1,12 +1,15 @@
 package com.example.smartparking.service.impl;
 
 
+import com.example.smartparking.config.SecurityConfig;
 import com.example.smartparking.model.Authority;
 import com.example.smartparking.model.User;
 import com.example.smartparking.repository.UserRepository;
 import com.example.smartparking.service.UserService;
 import com.example.smartparking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +21,14 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+//    TODO nu mi se pare ok injectat in felul asta(fara initializarea aia nu trece testul)
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public User addUser(User user) {
+    public User saveUser(User user) {
         boolean emailExists = userRepository.findByEmail(user.getEmail()).isEmpty();
         boolean phoneExists = userRepository.findByEmail(user.getPhone()).isEmpty();
-        if(emailExists || phoneExists){
+        if(!emailExists || !phoneExists){
             throw new IllegalStateException("This email/phone is attached to another account. Please use another email address/phone");
         }
 //        Authority authority = new Authority();

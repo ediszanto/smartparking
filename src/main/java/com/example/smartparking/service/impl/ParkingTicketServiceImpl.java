@@ -12,6 +12,7 @@ import com.example.smartparking.repository.ReservationRepository;
 import com.example.smartparking.service.ParkingFeeService;
 import com.example.smartparking.service.ParkingSpotService;
 import com.example.smartparking.service.ParkingTicketService;
+import com.example.smartparking.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,8 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 
     private final ParkingTicketRepository parkingTicketRepository;
     private final ReservationRepository reservationRepository;
-    private final ReservationServiceImpl reservationService;
+    private final ReservationService reservationService;
     private final ParkingSpotService parkingSpotService;
-    private final ParkingFeeRepository parkingFeeRepository;
-    private final ParkingFeeService parkingFeeService;
 
     @Override
     public ParkingTicket parkWithReservation(String reservationNumber) {
@@ -58,20 +57,18 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
     public ParkingTicket parkWithoutReservation(ParkingTicket parkingTicket) {
         // vehicle , parking spot, parking spot status
         ParkingSpot desiredParkingSpot = parkingSpotService.findSpotByNumber(parkingTicket.getParkingSpot().getNumber());
-        if(desiredParkingSpot.getStatus().equals("TAKEN") || !desiredParkingSpot.getSize().equals(parkingTicket.getVehicle().getSize())){
+        if(desiredParkingSpot.getStatus().equals("TAKEN") || !desiredParkingSpot.getSize().equals(parkingTicket.getVehicle().getSize()) ){
             throw new IllegalStateException("Parking Spot already taken Or size of vehicle and parking spot doesn't match!");
         }
-        desiredParkingSpot.setStatus("TAKEN");
-        parkingSpotService.updateParkingSpot(desiredParkingSpot);
-
-        ParkingFee parkingFee = parkingTicket.getParkingFee();
-        parkingFee.setParkingSpotSize(parkingTicket.getVehicle().getSize());
-
+        ParkingFee parkingFee = new ParkingFee();
+        parkingFee.setParkingSpotSize(desiredParkingSpot.getSize());
         parkingTicket.setParkingSpot(desiredParkingSpot);
         parkingTicket.setVehicle(parkingTicket.getVehicle());
         parkingTicket.setStartTime(LocalDateTime.now());
         parkingTicket.setParkingFee(parkingFee);
 
+        desiredParkingSpot.setStatus("TAKEN");
+        parkingSpotService.updateParkingSpot(desiredParkingSpot);
         return parkingTicketRepository.save(parkingTicket);
     }
 
@@ -93,7 +90,7 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
         parkingFee.setAmount(amout);
         parkingTicket.setParkingFee(parkingFee);
 
-        log.info("You jave to pay: $" + amout + " \ntime to pay for: " + duration.toHours() + " hours");
+        log.info("You jave to pay: $" + amout + " --- time to pay for: " + duration.toMinutes() + " minutes -- ( minutes < 60 => you have to pay a FULL hour)");
 
         return parkingTicketRepository.save(parkingTicket);
     }

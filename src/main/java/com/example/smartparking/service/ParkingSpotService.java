@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ParkingSpotService {
 
-    ParkingSpot createParkingSpot(ParkingSpot parkingSpot);
+    ParkingSpot saveParkingSpot(ParkingSpot parkingSpot);
 
     ParkingSpot findSpotById(Long spotId);
 

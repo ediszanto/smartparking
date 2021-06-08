@@ -20,15 +20,12 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<Reservation> reservationRequst(@RequestBody Reservation reservationRequest, Authentication authentication) {
         Reservation reservation = reservationService.saveReservation(reservationRequest, authentication);
-        if (reservation != null) {
-            log.info("Reservation Created succesfully");
-        }
         return new ResponseEntity<>(reservation, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Reservation> getReservation(@PathVariable Long id){
-        Reservation reservation = reservationService.getReservationByReservationById(id);
+        Reservation reservation = reservationService.getReservationById(id);
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 

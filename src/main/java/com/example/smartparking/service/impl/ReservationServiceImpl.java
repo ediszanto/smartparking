@@ -29,15 +29,13 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation saveReservation(Reservation reservationRequest, Authentication authentication) {
-        User user = null;
         if (Optional.ofNullable(userRepository.findByEmail(authentication.getName())).isEmpty()){
-            throw new NotFoundException("User Not Found");
-        }else{
-            user = userRepository.findByEmail(authentication.getName()).get();
+            throw new NotFoundException("User Not Found. You sshould be registered as a user!");
         }
+        User user = userRepository.findByEmail(authentication.getName()).get();
         ParkingSpot desiredParkingSpot = parkingSpotService.findSpotByNumber(reservationRequest.getParkingSpot().getNumber());
         if(desiredParkingSpot.getStatus().equals("TAKEN") || !desiredParkingSpot.getSize().equals(reservationRequest.getVehicle().getSize())){
-            throw new IllegalStateException("Parking Spot already taken Or size of vehicle and parking spot doesn't match!");
+            throw new IllegalStateException("Parking spot already taken Or size of vehicle and parking spot doesn't match!");
         }
         reservationRequest.setReservationNumber(UUID.randomUUID().toString());
         reservationRequest.setIssuedAt(LocalDate.now());
@@ -48,13 +46,13 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation getReservationByReservationById(Long id) {
+    public Reservation getReservationById(Long id) {
         return reservationRepository.findReservationById(id).orElseThrow(() -> new NotFoundException("Reservation not found"));
     }
 
     @Override
     public void cancelReservation(Long id) throws NotFoundException {
-        Reservation reservationToInvalidate = getReservationByReservationById(id);
+        Reservation reservationToInvalidate = getReservationById(id);
 
         reservationToInvalidate.setExpiresAt(LocalDate.now());
         reservationToInvalidate.setEndTime(LocalDate.now());
@@ -63,7 +61,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation updateReservation(Long id, Reservation reservationUpdate) {
-        Reservation savedReservation = getReservationByReservationById(id);
+        Reservation savedReservation = getReservationById(id);
 
         LocalDate limit = savedReservation.getStartTime().minusDays(7);
         if(LocalDate.now().isAfter(limit)){

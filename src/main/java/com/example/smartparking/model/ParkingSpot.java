@@ -12,8 +12,6 @@ import javax.persistence.*;
 @Setter
 @Table(name = "parking_spot")
 @Entity
-@ToString
-//@Embeddable
 public class ParkingSpot  {
 
     @Id
@@ -29,14 +27,4 @@ public class ParkingSpot  {
     @NotNull
     private String status; // asta e pt <free> din documentatie ( FREE / TAKEN )
 
-
-    @Override
-    public String toString() {
-        return "ParkingSpot{" +
-                "id=" + id +
-                ", number=" + number +
-                ", size='" + size + '\'' +
-                ", status='" + status + '\'' +
-                '}';
-    }
 }

@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 @Entity
 @Data
-@ToString
+//@ToString
 @Table(name = "reservation")
 @NoArgsConstructor
 public class Reservation {

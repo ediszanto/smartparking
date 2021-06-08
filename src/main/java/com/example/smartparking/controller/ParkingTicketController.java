@@ -25,7 +25,7 @@ public class ParkingTicketController {
         }
 
         @PostMapping("/park")
-        public ResponseEntity<ParkingTicket> parkWithoutReservation(@Validated @RequestBody ParkingTicket parkingTicket){
+        public ResponseEntity<ParkingTicket> parkWithoutReservation( @RequestBody ParkingTicket parkingTicket){
                 ParkingTicket newParkingTicket = parkingTicketService.parkWithoutReservation(parkingTicket);
                 return new ResponseEntity<>(newParkingTicket, HttpStatus.CREATED);
         }
@@ -33,7 +33,7 @@ public class ParkingTicketController {
         @PatchMapping("/pay/{ticketId}")
         public ResponseEntity<ParkingTicket> pay(@PathVariable Long ticketId){
                 ParkingTicket parkingTicket = parkingTicketService.pay(ticketId);
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(parkingTicket, HttpStatus.OK);
         }
 
 
