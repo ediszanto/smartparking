@@ -18,16 +18,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().mvcMatchers(HttpMethod.POST, "/smartparking/spot").hasAuthority("ADMIN")
+                                .mvcMatchers(HttpMethod.PUT, "/smartparking/spot").hasAuthority("ADMIN")
+                                .mvcMatchers(HttpMethod.DELETE, "/smartparking/spot").hasAuthority("ADMIN")
+                                .mvcMatchers(HttpMethod.GET, "/smartparking/spot").authenticated()
                                 .mvcMatchers(HttpMethod.POST, "/smartparking/user").permitAll()
+                                .mvcMatchers(HttpMethod.GET, "/smartparking/user").authenticated()
+                                .mvcMatchers(HttpMethod.DELETE, "/smartparking/user").authenticated()
+                                .mvcMatchers(HttpMethod.PATCH, "/smartparking/user").authenticated()
                                 .mvcMatchers(HttpMethod.POST, "/smartparking/reservation").hasAuthority("CLIENT")
+                                .mvcMatchers(HttpMethod.GET, "/smartparking/reservation").hasAuthority("CLIENT")
+                                .mvcMatchers(HttpMethod.PATCH, "/smartparking/reservation").hasAuthority("CLIENT")
+                                .mvcMatchers(HttpMethod.DELETE, "/smartparking/reservation").hasAuthority("CLIENT")
+                                .mvcMatchers("/park").permitAll()
                                 .anyRequest().permitAll();
 
     }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
-
 }

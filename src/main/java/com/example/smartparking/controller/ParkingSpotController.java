@@ -35,7 +35,6 @@ public class ParkingSpotController {
         return new ResponseEntity<>(upadtedParkingSpot, HttpStatus.OK);
     }
 
-
 //    DELETE By Spot Number
     @DeleteMapping("/spot/{spotNumber}")
     public ResponseEntity<Void> deleteParkingSpot(@PathVariable Long spotNumber) {

@@ -21,10 +21,10 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-//    TODO nu mi se pare ok injectat in felul asta(fara initializarea aia nu trece testul)
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
+
     public User saveUser(User user) {
         boolean emailExists = userRepository.findByEmail(user.getEmail()).isEmpty();
         boolean phoneExists = userRepository.findByEmail(user.getPhone()).isEmpty();
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 //        Authority authority = new Authority();
 //        authority.setName("CLIENT");
 //        user.setAuthorities(Collections.singletonList(authority));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public User updateUserDetails(Long id, User userUpdates) {
         User user = userRepository.getById(id);
 
-        user.setPassword(Optional.ofNullable(passwordEncoder.encode(userUpdates.getPassword())).orElse(user.getPassword()));
+        user.setPassword(Optional.ofNullable(bCryptPasswordEncoder.encode(userUpdates.getPassword())).orElse(user.getPassword()));
         user.setEmail(Optional.ofNullable(userUpdates.getEmail()).orElse(user.getEmail()));
         user.setFirstName(Optional.ofNullable(userUpdates.getFirstName()).orElse(user.getFirstName()));
         user.setLastName(Optional.ofNullable(userUpdates.getLastName()).orElse(user.getLastName()));
