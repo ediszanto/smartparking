@@ -20,6 +20,12 @@ public class UserContoller {
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/user/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
         User userByEmail = userService.getUserByEmail(email);
@@ -32,17 +38,9 @@ public class UserContoller {
         return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUserById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @PatchMapping("/user/{id}")
     public ResponseEntity<User> updateUserDetails(@PathVariable Long id, @RequestBody User userUpdates){
         User userUpdate = userService.updateUserDetails(id, userUpdates);
         return new ResponseEntity<>(userUpdate, HttpStatus.OK);
     }
-
-
 }

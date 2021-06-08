@@ -94,6 +94,4 @@ public class ParkingTicketServiceImpl implements ParkingTicketService {
 
         return parkingTicketRepository.save(parkingTicket);
     }
-
-
 }
