@@ -1,18 +1,12 @@
 package com.example.smartparking.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
-import java.util.function.Consumer;
 
 @Entity
 @Data

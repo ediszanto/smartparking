@@ -1,16 +1,13 @@
 package com.example.smartparking.service.impl;
 
 
-import com.example.smartparking.config.SecurityConfig;
+import com.example.smartparking.exceptions.NotFoundException;
 import com.example.smartparking.model.Authority;
 import com.example.smartparking.model.User;
 import com.example.smartparking.repository.UserRepository;
 import com.example.smartparking.service.UserService;
-import com.example.smartparking.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

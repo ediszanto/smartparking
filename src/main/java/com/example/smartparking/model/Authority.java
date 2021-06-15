@@ -3,11 +3,9 @@ package com.example.smartparking.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter

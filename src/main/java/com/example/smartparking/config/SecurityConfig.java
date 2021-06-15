@@ -29,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                                 .mvcMatchers(HttpMethod.GET, "/smartparking/reservation").hasAuthority("CLIENT")
                                 .mvcMatchers(HttpMethod.PATCH, "/smartparking/reservation").hasAuthority("CLIENT")
                                 .mvcMatchers(HttpMethod.DELETE, "/smartparking/reservation").hasAuthority("CLIENT")
+                                .mvcMatchers("/park/").hasAuthority("CLIENT")
                                 .mvcMatchers("/park").permitAll()
                                 .anyRequest().permitAll();
 

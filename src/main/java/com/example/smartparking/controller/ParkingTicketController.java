@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/smartparking")
@@ -25,7 +27,7 @@ public class ParkingTicketController {
         }
 
         @PostMapping("/park")
-        public ResponseEntity<ParkingTicket> parkWithoutReservation( @RequestBody ParkingTicket parkingTicket){
+        public ResponseEntity<ParkingTicket> parkWithoutReservation(@RequestBody ParkingTicket parkingTicket){
                 ParkingTicket newParkingTicket = parkingTicketService.parkWithoutReservation(parkingTicket);
                 return new ResponseEntity<>(newParkingTicket, HttpStatus.CREATED);
         }

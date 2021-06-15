@@ -6,7 +6,7 @@
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/smartparking</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
+      <working-dir>C:\Users\rober\Documents\smartparking</working-dir>
     </data-source>
   </component>
 </project>

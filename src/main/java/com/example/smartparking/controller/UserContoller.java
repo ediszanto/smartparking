@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/smartparking")
@@ -15,7 +17,7 @@ public class UserContoller {
     private final UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<User> addUser( @RequestBody User user){
+    public ResponseEntity<User> addUser(@Valid @RequestBody User user){
         User savedUser = userService.saveUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }

@@ -50,14 +50,14 @@ public class ServiceLogAspect {
     @Around("beanPointCut() && deletePointCut() && argsPointCut(model)")
     public Object serviceDeleteLog(ProceedingJoinPoint proceedingJoinPoint, Object model) throws Throwable {
         Object retValue = proceedingJoinPoint.proceed();
-        log.info("Executed DELETE with return {}", retValue.toString());
+        log.info("Executed DELETE");
         return retValue;
     }
 
     @Around("cancelPointCut() && argsPointCut(model)")
     public Object cancelDeleteLog(ProceedingJoinPoint proceedingJoinPoint, Object model) throws Throwable {
         Object retValue = proceedingJoinPoint.proceed();
-        log.info("Succesfully submit CANCEL for reservation - with return {}", retValue.toString());
+        log.info("Reservation CANCELED Successfuly!! ");
         return retValue;
     }
 

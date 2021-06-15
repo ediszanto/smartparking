@@ -6,9 +6,9 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,14 +23,14 @@ public class ParkingSpotController {
 
 //    ADD
     @PostMapping("/spot")
-    public ResponseEntity<ParkingSpot> saveParkingSpot(@RequestBody @Validated ParkingSpot parkingSpot){
+    public ResponseEntity<ParkingSpot> saveParkingSpot(@RequestBody @Valid ParkingSpot parkingSpot){
         ParkingSpot newParkingSpot = parkingSpotService.saveParkingSpot(parkingSpot);
         return new ResponseEntity<>(newParkingSpot, HttpStatus.CREATED);
     }
 
 //    UPDTE
     @PutMapping("/spot")
-    public ResponseEntity<ParkingSpot> updateParkingSpot(@Validated @RequestBody ParkingSpot   parkingSpot) {
+    public ResponseEntity<ParkingSpot> updateParkingSpot(@Valid @RequestBody ParkingSpot  parkingSpot) {
         ParkingSpot upadtedParkingSpot = parkingSpotService.updateParkingSpot(parkingSpot);
         return new ResponseEntity<>(upadtedParkingSpot, HttpStatus.OK);
     }

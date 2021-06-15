@@ -2,10 +2,10 @@ package com.example.smartparking.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Getter
@@ -22,9 +22,13 @@ public class ParkingSpot  {
     private Long number;
 
     @NotNull
+    @Size(max = 3)
     private String size;
 
     @NotNull
-    private String status; // asta e pt <free> din documentatie ( FREE / TAKEN )
+    private String status;
+
+    @Column(name = "lot_id")
+    private Long parkingLotId;
 
 }

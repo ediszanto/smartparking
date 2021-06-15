@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/smartparking/reservation")
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping
-    public ResponseEntity<Reservation> reservationRequst(@RequestBody Reservation reservationRequest, Authentication authentication) {
+    public ResponseEntity<Reservation> reservationRequst(@Valid @RequestBody Reservation reservationRequest, Authentication authentication) {
         Reservation reservation = reservationService.saveReservation(reservationRequest, authentication);
         return new ResponseEntity<>(reservation, HttpStatus.CREATED);
     }
@@ -30,7 +32,7 @@ public class ReservationController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Reservation> updateReservation(@PathVariable Long id, @RequestBody Reservation reservationUpdate) {
+    public ResponseEntity<Reservation> updateReservation(@PathVariable Long id, @Valid @RequestBody Reservation reservationUpdate) {
         Reservation reservation = reservationService.updateReservation(id, reservationUpdate);
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }

@@ -1,11 +1,9 @@
 package com.example.smartparking.model;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.intellij.lang.annotations.Pattern;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -18,27 +16,30 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(name = "first_name")
-    @Pattern(value = "[a-zA-z]{1,15}")
+    @NotNull
+    @Size(max = 10)
     private String firstName;
 
     @Column(name = "last_name")
-    @Pattern(value = "[a-zA-z]{1,15}")
+    @NotNull
+    @Size(max = 10)
     private String lastName;
 
-
-    @Pattern(value = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @NotNull
+    @Size(max = 20, min = 6)
     private String email;
 
-
+    @NotNull
+    @Size(min = 3)
     private String password;
 
-//    @NotNull
-    @Pattern(value = "[0-9]{10,13}")
+    @NotNull
+    @Size(max = 12, min = 10)
+    @Pattern(regexp = "[0-9]{10,12}")
     private String phone;
 
-
+    @NotNull
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Authority> authorities;
